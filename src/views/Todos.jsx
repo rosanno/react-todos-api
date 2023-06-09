@@ -2,9 +2,12 @@ import { useState } from "react";
 import Input from "../components/Input";
 import TodoItem from "../components/TodoItem";
 import { useFetchTodos } from "../hooks/useFetchTodos";
+import Loading from "../components/Loading";
 
 const Todos = () => {
-  const { todos, setTodos, loading } = useFetchTodos();
+  const { todos, setTodos, loading } = useFetchTodos(
+    "https://dummyjson.com/todos"
+  );
   const [todoInput, setTodoInput] = useState("");
 
   const onDelete = async (todoId) => {
@@ -67,21 +70,29 @@ const Todos = () => {
     }
   };
 
-  if (loading) return <h1>Loading...</h1>;
-
   return (
     <div className="w-full max-w-[900px] mx-auto mt-10">
       <form onSubmit={addTodo}>
-        <Input todoInput={todoInput} setTodoInput={setTodoInput} />
-      </form>
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onDelete={onDelete}
-          onUpdate={onUpdate}
+        <Input
+          todoInput={todoInput}
+          setTodoInput={setTodoInput}
+          onSubmit={addTodo}
         />
-      ))}
+      </form>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onDelete={onDelete}
+              onUpdate={onUpdate}
+            />
+          ))}
+        </>
+      )}
     </div>
   );
 };
