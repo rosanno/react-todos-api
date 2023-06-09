@@ -10,7 +10,7 @@ const TodoItem = ({ todo, onDelete, onUpdate }) => {
           {todo.completed ? (
             <AiFillCheckCircle
               className="text-green-500"
-              size="24px"
+              size="20px"
               onClick={() => onUpdate(todo.id, todo.completed)}
             />
           ) : (
